@@ -1,16 +1,44 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { DashboardProvider } from "@/context/DashboardContext";
+import SummaryCards from "@/components/dashboard/SummaryCards";
+import BalanceTrendChart from "@/components/dashboard/BalanceTrendChart";
+import SpendingBreakdown from "@/components/dashboard/SpendingBreakdown";
+import TransactionsTable from "@/components/dashboard/TransactionsTable";
+import InsightsSection from "@/components/dashboard/InsightsSection";
+import RoleSwitcher from "@/components/dashboard/RoleSwitcher";
+import { BarChart3 } from "lucide-react";
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
+const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
-    </div>
+    <DashboardProvider>
+      <div className="min-h-screen bg-background">
+        <header className="border-b border-border/50 px-4 sm:px-6 lg:px-8">
+          <div className="container mx-auto flex items-center justify-between h-14">
+            <div className="flex items-center gap-2">
+              <BarChart3 className="h-5 w-5 text-primary" />
+              <span className="font-heading font-bold text-sm tracking-tight">FinanceFlow</span>
+            </div>
+            <RoleSwitcher />
+          </div>
+        </header>
+
+        <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6 max-w-7xl">
+          <SummaryCards />
+          
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
+            <div className="lg:col-span-3">
+              <BalanceTrendChart />
+            </div>
+            <div className="lg:col-span-2">
+              <SpendingBreakdown />
+            </div>
+          </div>
+
+          <InsightsSection />
+          <TransactionsTable />
+        </main>
+      </div>
+    </DashboardProvider>
   );
 };
-
-const Index = PlaceholderIndex;
 
 export default Index;
