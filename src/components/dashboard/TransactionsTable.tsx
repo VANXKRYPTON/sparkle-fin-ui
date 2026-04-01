@@ -1,6 +1,7 @@
 import { useDashboard, CATEGORIES, type Category, type TransactionType } from "@/context/DashboardContext";
 import { Search, ArrowUpDown, Plus, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import TransactionModal from "./TransactionModal";
 
 const TransactionsTable = () => {
@@ -19,7 +20,12 @@ const TransactionsTable = () => {
   const fmt = (n: number) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(n);
 
   return (
-    <div className="glass-card rounded-lg animate-fade-in" style={{ animationDelay: "400ms" }}>
+    <motion.div
+      className="glass-card rounded-lg"
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.5, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+    >
       <div className="p-5 border-b border-border/50">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <h3 className="text-sm font-medium text-muted-foreground">Transactions</h3>
@@ -31,7 +37,7 @@ const TransactionsTable = () => {
                 placeholder="Search..."
                 value={filters.search}
                 onChange={e => setFilters({ search: e.target.value })}
-                className="h-8 w-full sm:w-44 rounded-md bg-secondary pl-8 pr-3 text-xs text-foreground placeholder:text-muted-foreground border-none outline-none focus:ring-1 focus:ring-primary/50"
+                className="h-8 w-full sm:w-44 rounded-md bg-secondary pl-8 pr-3 text-xs text-foreground placeholder:text-muted-foreground border-none outline-none focus:ring-1 focus:ring-primary/50 transition-shadow duration-200"
               />
             </div>
             <select
@@ -51,14 +57,21 @@ const TransactionsTable = () => {
               <option value="all">All Categories</option>
               {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
             </select>
-            {role === "admin" && (
-              <button
-                onClick={() => { setEditId(null); setShowModal(true); }}
-                className="h-8 px-3 rounded-md bg-primary text-primary-foreground text-xs font-medium flex items-center gap-1.5 hover:opacity-90 transition-opacity"
-              >
-                <Plus className="h-3.5 w-3.5" /> Add
-              </button>
-            )}
+            <AnimatePresence>
+              {role === "admin" && (
+                <motion.button
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => { setEditId(null); setShowModal(true); }}
+                  className="h-8 px-3 rounded-md bg-primary text-primary-foreground text-xs font-medium flex items-center gap-1.5"
+                >
+                  <Plus className="h-3.5 w-3.5" /> Add
+                </motion.button>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       </div>
@@ -79,46 +92,65 @@ const TransactionsTable = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredTransactions.length === 0 ? (
-              <tr>
-                <td colSpan={role === "admin" ? 5 : 4} className="p-8 text-center text-muted-foreground">
-                  No transactions found
-                </td>
-              </tr>
-            ) : (
-              filteredTransactions.slice(0, 20).map(t => (
-                <tr key={t.id} className="border-b border-border/30 hover:bg-secondary/50 transition-colors">
-                  <td className="p-3 font-mono text-muted-foreground">{t.date}</td>
-                  <td className="p-3">{t.description}</td>
-                  <td className="p-3">
-                    <span className="px-2 py-0.5 rounded-full bg-secondary text-secondary-foreground text-[10px]">
-                      {t.category}
-                    </span>
+            <AnimatePresence mode="popLayout">
+              {filteredTransactions.length === 0 ? (
+                <motion.tr
+                  key="empty"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  <td colSpan={role === "admin" ? 5 : 4} className="p-8 text-center text-muted-foreground">
+                    No transactions found
                   </td>
-                  <td className={`p-3 text-right font-mono font-medium ${t.type === "income" ? "text-income" : "text-expense"}`}>
-                    {t.type === "income" ? "+" : "-"}{fmt(t.amount)}
-                  </td>
-                  {role === "admin" && (
-                    <td className="p-3 text-right">
-                      <div className="flex items-center justify-end gap-1">
-                        <button
-                          onClick={() => { setEditId(t.id); setShowModal(true); }}
-                          className="p-1.5 rounded hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
-                        >
-                          <Pencil className="h-3 w-3" />
-                        </button>
-                        <button
-                          onClick={() => deleteTransaction(t.id)}
-                          className="p-1.5 rounded hover:bg-destructive/20 transition-colors text-muted-foreground hover:text-expense"
-                        >
-                          <Trash2 className="h-3 w-3" />
-                        </button>
-                      </div>
+                </motion.tr>
+              ) : (
+                filteredTransactions.slice(0, 20).map((t, i) => (
+                  <motion.tr
+                    key={t.id}
+                    layout
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 10, height: 0 }}
+                    transition={{ delay: Math.min(i * 0.02, 0.3), duration: 0.3 }}
+                    className="border-b border-border/30 hover:bg-secondary/50 transition-colors"
+                  >
+                    <td className="p-3 font-mono text-muted-foreground">{t.date}</td>
+                    <td className="p-3">{t.description}</td>
+                    <td className="p-3">
+                      <span className="px-2 py-0.5 rounded-full bg-secondary text-secondary-foreground text-[10px]">
+                        {t.category}
+                      </span>
                     </td>
-                  )}
-                </tr>
-              ))
-            )}
+                    <td className={`p-3 text-right font-mono font-medium ${t.type === "income" ? "text-income" : "text-expense"}`}>
+                      {t.type === "income" ? "+" : "-"}{fmt(t.amount)}
+                    </td>
+                    {role === "admin" && (
+                      <td className="p-3 text-right">
+                        <div className="flex items-center justify-end gap-1">
+                          <motion.button
+                            whileHover={{ scale: 1.2 }}
+                            whileTap={{ scale: 0.9 }}
+                            onClick={() => { setEditId(t.id); setShowModal(true); }}
+                            className="p-1.5 rounded hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
+                          >
+                            <Pencil className="h-3 w-3" />
+                          </motion.button>
+                          <motion.button
+                            whileHover={{ scale: 1.2 }}
+                            whileTap={{ scale: 0.9 }}
+                            onClick={() => deleteTransaction(t.id)}
+                            className="p-1.5 rounded hover:bg-destructive/20 transition-colors text-muted-foreground hover:text-expense"
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </motion.button>
+                        </div>
+                      </td>
+                    )}
+                  </motion.tr>
+                ))
+              )}
+            </AnimatePresence>
           </tbody>
         </table>
       </div>
@@ -129,13 +161,12 @@ const TransactionsTable = () => {
         </div>
       )}
 
-      {showModal && (
-        <TransactionModal
-          editId={editId}
-          onClose={() => setShowModal(false)}
-        />
-      )}
-    </div>
+      <AnimatePresence>
+        {showModal && (
+          <TransactionModal editId={editId} onClose={() => setShowModal(false)} />
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 };
 
