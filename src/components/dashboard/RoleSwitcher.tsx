@@ -1,5 +1,6 @@
 import { useDashboard, type Role } from "@/context/DashboardContext";
 import { Shield, Eye } from "lucide-react";
+import { motion } from "framer-motion";
 
 const RoleSwitcher = () => {
   const { role, setRole } = useDashboard();
@@ -10,14 +11,19 @@ const RoleSwitcher = () => {
         <button
           key={r}
           onClick={() => setRole(r)}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
-            role === r
-              ? "bg-primary text-primary-foreground shadow-sm"
-              : "text-muted-foreground hover:text-foreground"
-          }`}
+          className="relative flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors"
         >
-          {r === "admin" ? <Shield className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
-          {r === "admin" ? "Admin" : "Viewer"}
+          {role === r && (
+            <motion.div
+              layoutId="role-pill"
+              className="absolute inset-0 bg-primary rounded-md"
+              transition={{ type: "spring", stiffness: 400, damping: 30 }}
+            />
+          )}
+          <span className={`relative z-10 flex items-center gap-1.5 ${role === r ? "text-primary-foreground" : "text-muted-foreground"}`}>
+            {r === "admin" ? <Shield className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
+            {r === "admin" ? "Admin" : "Viewer"}
+          </span>
         </button>
       ))}
     </div>
