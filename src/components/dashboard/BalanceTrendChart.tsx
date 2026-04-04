@@ -8,7 +8,7 @@ const BalanceTrendChart = () => {
 
   const data = useMemo(() => {
     const monthly: Record<string, { income: number; expense: number }> = {};
-    transactions.forEach(t => {
+    filteredTransactions.forEach(t => {
       const key = t.date.substring(0, 7);
       if (!monthly[key]) monthly[key] = { income: 0, expense: 0 };
       if (t.type === "income") monthly[key].income += t.amount;
