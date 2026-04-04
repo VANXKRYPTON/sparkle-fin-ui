@@ -30,7 +30,7 @@ const SpendingBreakdown = () => {
 
   const data = useMemo(() => {
     const byCategory: Record<string, number> = {};
-    transactions.filter(t => t.type === "expense").forEach(t => {
+    filteredTransactions.filter(t => t.type === "expense").forEach(t => {
       byCategory[t.category] = (byCategory[t.category] || 0) + t.amount;
     });
     return Object.entries(byCategory)
