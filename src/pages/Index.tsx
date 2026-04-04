@@ -6,10 +6,13 @@ import TransactionsTable from "@/components/dashboard/TransactionsTable";
 import InsightsSection from "@/components/dashboard/InsightsSection";
 import RoleSwitcher from "@/components/dashboard/RoleSwitcher";
 import DateRangePicker from "@/components/dashboard/DateRangePicker";
-import { BarChart3 } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
+import { BarChart3, LogOut } from "lucide-react";
 import { motion } from "framer-motion";
 
 const Index = () => {
+  const { signOut } = useAuth();
+
   return (
     <DashboardProvider>
       <div className="min-h-screen bg-background">
@@ -27,7 +30,18 @@ const Index = () => {
               <BarChart3 className="h-5 w-5 text-primary" />
               <span className="font-heading font-bold text-sm tracking-tight">FinanceFlow</span>
             </motion.div>
-            <RoleSwitcher />
+            <div className="flex items-center gap-3">
+              <RoleSwitcher />
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={signOut}
+                className="h-8 px-3 rounded-md bg-secondary hover:bg-secondary/80 text-xs text-muted-foreground hover:text-foreground flex items-center gap-1.5 transition-colors"
+              >
+                <LogOut className="h-3.5 w-3.5" />
+                Sign Out
+              </motion.button>
+            </div>
           </div>
         </motion.header>
 
