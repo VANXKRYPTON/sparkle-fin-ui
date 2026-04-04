@@ -4,7 +4,7 @@ import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianG
 import { motion } from "framer-motion";
 
 const BalanceTrendChart = () => {
-  const { transactions } = useDashboard();
+  const { filteredTransactions } = useDashboard();
 
   const data = useMemo(() => {
     const monthly: Record<string, { income: number; expense: number }> = {};
