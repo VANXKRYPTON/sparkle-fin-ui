@@ -19,6 +19,8 @@ interface Filters {
   category: Category | "all";
   sortBy: "date" | "amount";
   sortOrder: "asc" | "desc";
+  dateFrom: string | null;
+  dateTo: string | null;
 }
 
 interface DashboardState {
