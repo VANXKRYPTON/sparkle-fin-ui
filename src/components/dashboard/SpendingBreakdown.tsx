@@ -26,7 +26,7 @@ const legendItem = {
 };
 
 const SpendingBreakdown = () => {
-  const { transactions } = useDashboard();
+  const { filteredTransactions } = useDashboard();
 
   const data = useMemo(() => {
     const byCategory: Record<string, number> = {};
