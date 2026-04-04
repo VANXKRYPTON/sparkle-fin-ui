@@ -145,6 +145,8 @@ export const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     }
     if (filters.type !== "all") result = result.filter(t => t.type === filters.type);
     if (filters.category !== "all") result = result.filter(t => t.category === filters.category);
+    if (filters.dateFrom) result = result.filter(t => t.date >= filters.dateFrom!);
+    if (filters.dateTo) result = result.filter(t => t.date <= filters.dateTo!);
     result.sort((a, b) => {
       const mul = filters.sortOrder === "asc" ? 1 : -1;
       if (filters.sortBy === "date") return mul * a.date.localeCompare(b.date);
