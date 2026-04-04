@@ -11,6 +11,8 @@ import { BarChart3, LogOut } from "lucide-react";
 import { motion } from "framer-motion";
 
 const Index = () => {
+  const { signOut } = useAuth();
+
   return (
     <DashboardProvider>
       <div className="min-h-screen bg-background">
