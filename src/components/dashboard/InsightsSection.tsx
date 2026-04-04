@@ -4,7 +4,7 @@ import { Zap, TrendingUp, AlertTriangle, PiggyBank } from "lucide-react";
 import { motion } from "framer-motion";
 
 const InsightsSection = () => {
-  const { transactions } = useDashboard();
+  const { filteredTransactions: transactions } = useDashboard();
 
   const insights = useMemo(() => {
     if (transactions.length === 0) return [];

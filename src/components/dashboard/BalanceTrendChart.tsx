@@ -22,7 +22,7 @@ const BalanceTrendChart = () => {
         expense: Math.round(expense),
         net: Math.round(income - expense),
       }));
-  }, [transactions]);
+  }, [filteredTransactions]);
 
   return (
     <motion.div

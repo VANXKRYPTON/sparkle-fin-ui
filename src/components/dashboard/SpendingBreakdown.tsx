@@ -36,7 +36,7 @@ const SpendingBreakdown = () => {
     return Object.entries(byCategory)
       .map(([name, value]) => ({ name, value: Math.round(value) }))
       .sort((a, b) => b.value - a.value);
-  }, [transactions]);
+  }, [filteredTransactions]);
 
   const total = data.reduce((s, d) => s + d.value, 0);
   const fmt = (n: number) => `$${n.toLocaleString()}`;
