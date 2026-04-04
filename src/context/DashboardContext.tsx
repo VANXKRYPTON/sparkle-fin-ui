@@ -109,6 +109,8 @@ export const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     category: "all",
     sortBy: "date",
     sortOrder: "desc",
+    dateFrom: null,
+    dateTo: null,
   });
 
   const persist = (txns: Transaction[]) => {
