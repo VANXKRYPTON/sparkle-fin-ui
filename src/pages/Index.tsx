@@ -5,6 +5,7 @@ import SpendingBreakdown from "@/components/dashboard/SpendingBreakdown";
 import TransactionsTable from "@/components/dashboard/TransactionsTable";
 import InsightsSection from "@/components/dashboard/InsightsSection";
 import RoleSwitcher from "@/components/dashboard/RoleSwitcher";
+import DateRangePicker from "@/components/dashboard/DateRangePicker";
 import { BarChart3 } from "lucide-react";
 import { motion } from "framer-motion";
 
