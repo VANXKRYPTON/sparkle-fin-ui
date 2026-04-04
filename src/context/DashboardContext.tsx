@@ -19,6 +19,8 @@ interface Filters {
   category: Category | "all";
   sortBy: "date" | "amount";
   sortOrder: "asc" | "desc";
+  dateFrom: string | null;
+  dateTo: string | null;
 }
 
 interface DashboardState {
@@ -107,6 +109,8 @@ export const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     category: "all",
     sortBy: "date",
     sortOrder: "desc",
+    dateFrom: null,
+    dateTo: null,
   });
 
   const persist = (txns: Transaction[]) => {
@@ -141,6 +145,8 @@ export const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     }
     if (filters.type !== "all") result = result.filter(t => t.type === filters.type);
     if (filters.category !== "all") result = result.filter(t => t.category === filters.category);
+    if (filters.dateFrom) result = result.filter(t => t.date >= filters.dateFrom!);
+    if (filters.dateTo) result = result.filter(t => t.date <= filters.dateTo!);
     result.sort((a, b) => {
       const mul = filters.sortOrder === "asc" ? 1 : -1;
       if (filters.sortBy === "date") return mul * a.date.localeCompare(b.date);

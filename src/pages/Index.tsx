@@ -5,6 +5,7 @@ import SpendingBreakdown from "@/components/dashboard/SpendingBreakdown";
 import TransactionsTable from "@/components/dashboard/TransactionsTable";
 import InsightsSection from "@/components/dashboard/InsightsSection";
 import RoleSwitcher from "@/components/dashboard/RoleSwitcher";
+import DateRangePicker from "@/components/dashboard/DateRangePicker";
 import { BarChart3 } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -31,6 +32,9 @@ const Index = () => {
         </motion.header>
 
         <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6 max-w-7xl">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <DateRangePicker />
+          </div>
           <SummaryCards />
           
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">

@@ -26,17 +26,17 @@ const legendItem = {
 };
 
 const SpendingBreakdown = () => {
-  const { transactions } = useDashboard();
+  const { filteredTransactions } = useDashboard();
 
   const data = useMemo(() => {
     const byCategory: Record<string, number> = {};
-    transactions.filter(t => t.type === "expense").forEach(t => {
+    filteredTransactions.filter(t => t.type === "expense").forEach(t => {
       byCategory[t.category] = (byCategory[t.category] || 0) + t.amount;
     });
     return Object.entries(byCategory)
       .map(([name, value]) => ({ name, value: Math.round(value) }))
       .sort((a, b) => b.value - a.value);
-  }, [transactions]);
+  }, [filteredTransactions]);
 
   const total = data.reduce((s, d) => s + d.value, 0);
   const fmt = (n: number) => `$${n.toLocaleString()}`;

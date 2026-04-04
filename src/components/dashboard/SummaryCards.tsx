@@ -12,7 +12,7 @@ const cardVariants = {
 };
 
 const SummaryCards = () => {
-  const { transactions } = useDashboard();
+  const { filteredTransactions: transactions } = useDashboard();
 
   const { totalIncome, totalExpense, balance, incomeChange, expenseChange } = useMemo(() => {
     const now = new Date();

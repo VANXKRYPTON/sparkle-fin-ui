@@ -4,11 +4,11 @@ import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianG
 import { motion } from "framer-motion";
 
 const BalanceTrendChart = () => {
-  const { transactions } = useDashboard();
+  const { filteredTransactions } = useDashboard();
 
   const data = useMemo(() => {
     const monthly: Record<string, { income: number; expense: number }> = {};
-    transactions.forEach(t => {
+    filteredTransactions.forEach(t => {
       const key = t.date.substring(0, 7);
       if (!monthly[key]) monthly[key] = { income: 0, expense: 0 };
       if (t.type === "income") monthly[key].income += t.amount;
@@ -22,7 +22,7 @@ const BalanceTrendChart = () => {
         expense: Math.round(expense),
         net: Math.round(income - expense),
       }));
-  }, [transactions]);
+  }, [filteredTransactions]);
 
   return (
     <motion.div
